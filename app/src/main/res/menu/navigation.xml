@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionChat"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Chat" />
+    <item
+        android:id="@+id/actionBoard"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Board" />
+    <item
+        android:id="@+id/actionHistory"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="History" />
+    <item
+        android:id="@+id/actionSettings"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Settings" />
+</menu>

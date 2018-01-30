@@ -1,12 +1,12 @@
-package com.erros.minimax.ciceronetoothpick.presentation.chain
+package com.erros.minimax.ciceronetoothpick.presentation.chat
 
 import android.support.v4.app.Fragment
 import com.erros.minimax.ciceronetoothpick.di.Scopes
 import com.erros.minimax.ciceronetoothpick.di.module.ChatModule
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
 import com.erros.minimax.ciceronetoothpick.presentation.base.ChainFragment
-import com.erros.minimax.ciceronetoothpick.presentation.chat.ChatFragment
-import com.erros.minimax.ciceronetoothpick.presentation.conversations.ConversationsFragment
+import com.erros.minimax.ciceronetoothpick.presentation.chat.conversations.ConversationsFragment
+import com.erros.minimax.ciceronetoothpick.presentation.chat.messages.ChatFragment
 import toothpick.Toothpick
 
 /**
@@ -14,10 +14,10 @@ import toothpick.Toothpick
  */
 class ConversationChainFragment : ChainFragment() {
 
-    override fun createChildFragment(screenKey: String, data: Any?): Fragment = when (screenKey) {
+    override fun createChildFragment(screenKey: String, data: Any?): Fragment? = when (screenKey) {
         Screens.CONVERSATIONS -> ConversationsFragment()
         Screens.CHAT -> ChatFragment()
-        else -> ConversationsFragment()
+        else -> null
     }
 
     override val defaultScreen: String

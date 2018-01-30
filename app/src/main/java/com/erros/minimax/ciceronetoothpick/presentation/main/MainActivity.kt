@@ -10,8 +10,8 @@ import com.erros.minimax.ciceronetoothpick.di.module.MainActivityModule
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
 import com.erros.minimax.ciceronetoothpick.presentation.base.BackButtonListener
 import com.erros.minimax.ciceronetoothpick.presentation.board.BoardFragment
-import com.erros.minimax.ciceronetoothpick.presentation.chain.ConversationChainFragment
-import com.erros.minimax.ciceronetoothpick.presentation.history.HistoryFragment
+import com.erros.minimax.ciceronetoothpick.presentation.chat.ConversationChainFragment
+import com.erros.minimax.ciceronetoothpick.presentation.history.HistoryChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.terrakok.cicerone.Navigator
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private val conversationChainFragment by lazy { ConversationChainFragment() }
     private val boardFragment by lazy { BoardFragment() }
     private val settingsFragment by lazy { SettingsFragment() }
-    private val historyFragment by lazy { HistoryFragment() }
+    private val historyFragment by lazy { HistoryChainFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                                     .attach(settingsFragment)
                                     .commitNow()
                         }
-                        Screens.HISTORY -> {
+                        Screens.GROUPED_HISTORY -> {
                             supportFragmentManager.beginTransaction()
                                     .detach(boardFragment)
                                     .detach(conversationChainFragment)
@@ -161,7 +161,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
                 is Back -> {
                     val fragment = supportFragmentManager.findFragmentById(R.id.contentContainer)
-                    if (fragment == null) {
+                    if (fragment == null
+                            || fragment !is BackButtonListener) {
                         finish()
                     } else {
                         (fragment as BackButtonListener).onBackPressed()

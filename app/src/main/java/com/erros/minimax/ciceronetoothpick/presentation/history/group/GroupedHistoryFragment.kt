@@ -1,4 +1,4 @@
-package com.erros.minimax.ciceronetoothpick.presentation.conversations
+package com.erros.minimax.ciceronetoothpick.presentation.history.group
 
 import com.erros.minimax.ciceronetoothpick.R
 import com.erros.minimax.ciceronetoothpick.di.Scopes
@@ -10,23 +10,27 @@ import javax.inject.Inject
 /**
  * Created by minimax on 1/28/18.
  */
-class ConversationsFragment : BasePresenterFragment(), ConversationsContract.View {
+class GroupedHistoryFragment : BasePresenterFragment(), GroupedHistoryContract.View {
 
     @Inject
-    lateinit var presenter: ConversationsContract.Presenter
+    lateinit var presenter: GroupedHistoryContract.Presenter
 
     override val layout: Int
         get() = R.layout.fragment
 
     override fun initViews() {
-        textView.text = "conversations"
+        textView.text = "Grouped history"
         textView.setOnClickListener {
-            presenter.onOpenChatClick()
+            presenter.onOpenDetailClick()
         }
     }
 
     override fun inject() {
-        Toothpick.inject(this, Toothpick.openScope(Scopes.CHAT_SCOPE))
+        Toothpick.inject(this, Toothpick.openScope(Scopes.HISTORY_SCOPE))
+    }
+
+    override fun onBackPressed() {
+        presenter.onBackPressed()
     }
 
     override fun attachPresenter() {
@@ -35,9 +39,5 @@ class ConversationsFragment : BasePresenterFragment(), ConversationsContract.Vie
 
     override fun detachPresenter() {
         presenter.detachView()
-    }
-
-    override fun onBackPressed() {
-        presenter.onBackPressed()
     }
 }

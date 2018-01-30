@@ -17,7 +17,7 @@ class MainActivityModule : Module() {
         bind(Router::class.java).toInstance(cicerone.router)
         bind(NavigatorHolder::class.java).toInstance(cicerone.navigatorHolder)
 
-        bind(MainContract.Presenter::class.java).to(MainPresenter::class.java)
+        bind(MainContract.Presenter::class.java).to(MainPresenter::class.java).singletonInScope()
     }
 
 }

@@ -1,4 +1,4 @@
-package com.erros.minimax.ciceronetoothpick.presentation.chat
+package com.erros.minimax.ciceronetoothpick.presentation.chat.conversations
 
 import com.erros.minimax.ciceronetoothpick.R
 import com.erros.minimax.ciceronetoothpick.di.Scopes
@@ -10,24 +10,23 @@ import javax.inject.Inject
 /**
  * Created by minimax on 1/28/18.
  */
-class ChatFragment : BasePresenterFragment(), ChatContract.View {
+class ConversationsFragment : BasePresenterFragment(), ConversationsContract.View {
 
     @Inject
-    lateinit var presenter: ChatContract.Presenter
+    lateinit var presenter: ConversationsContract.Presenter
 
     override val layout: Int
         get() = R.layout.fragment
 
     override fun initViews() {
-        textView.text = "Chat"
+        textView.text = "Conversations"
+        textView.setOnClickListener {
+            presenter.onOpenChatClick()
+        }
     }
 
     override fun inject() {
         Toothpick.inject(this, Toothpick.openScope(Scopes.CHAT_SCOPE))
-    }
-
-    override fun onBackPressed() {
-        presenter.onBackPressed()
     }
 
     override fun attachPresenter() {
@@ -36,5 +35,9 @@ class ChatFragment : BasePresenterFragment(), ChatContract.View {
 
     override fun detachPresenter() {
         presenter.detachView()
+    }
+
+    override fun onBackPressed() {
+        presenter.onBackPressed()
     }
 }

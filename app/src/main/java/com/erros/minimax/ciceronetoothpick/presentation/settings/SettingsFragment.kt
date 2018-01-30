@@ -13,9 +13,10 @@ class SettingsFragment : BaseFragment() {
         get() = R.layout.fragment
 
     override fun initViews() {
-        textView.text = "settings"
+        textView.text = "Settings"
     }
 
     override fun inject() {
+
     }
 }

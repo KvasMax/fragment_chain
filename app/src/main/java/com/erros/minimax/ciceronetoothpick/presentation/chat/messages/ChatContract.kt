@@ -1,5 +1,6 @@
-package com.erros.minimax.ciceronetoothpick.presentation.chat
+package com.erros.minimax.ciceronetoothpick.presentation.chat.messages
 
+import com.erros.minimax.ciceronetoothpick.presentation.base.BackButtonListener
 import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
 import com.erros.minimax.ciceronetoothpick.presentation.base.BaseView
 
@@ -12,8 +13,7 @@ interface ChatContract {
 
     }
 
-    interface Presenter : BasePresenter<View> {
-        fun onBackPressed()
+    interface Presenter : BasePresenter<View>, BackButtonListener {
     }
 
 }

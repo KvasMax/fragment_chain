@@ -8,5 +8,6 @@ object Screens {
     const val CHAT = "CHAT_SCREEN"
     const val BOARD = "BOARD_SCREEN"
     const val SETTINGS = "SETTINGS_SCREEN"
-    const val HISTORY = "HISTORY_SCREEN"
+    const val GROUPED_HISTORY = "GROUPED_HISTORY"
+    const val DETAIL_HISTORY = "DETAIL_HISTORY"
 }

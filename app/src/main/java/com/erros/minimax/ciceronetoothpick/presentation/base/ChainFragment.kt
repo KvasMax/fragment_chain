@@ -2,10 +2,8 @@ package com.erros.minimax.ciceronetoothpick.presentation.base
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.erros.minimax.ciceronetoothpick.R
-import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.SupportAppNavigator
@@ -14,7 +12,7 @@ import javax.inject.Inject
 /**
  * Created by milkman on 29.01.18.
  */
-abstract class ChainFragment : BaseFragment(), BackButtonListener, FragmentContainer {
+abstract class ChainFragment : BaseFragment(), BackButtonListener {
 
     @Inject
     lateinit var router: Router
@@ -26,16 +24,8 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener, FragmentConta
         get() = R.layout.fragment_chain
 
     override fun initViews() {
+        router.replaceScreen(defaultScreen)
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (childFragmentManager.fragments.isEmpty()) {
-            router.replaceScreen(defaultScreen)
-        }
-    }
-
-    override fun getNavigator(): Navigator = navigator
 
     override fun onResume() {
         super.onResume()
@@ -49,7 +39,8 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener, FragmentConta
 
     override fun onBackPressed() {
         val fragment = childFragmentManager.findFragmentById(R.id.contentContainer)
-        if (fragment == null) {
+        if (fragment == null
+                || fragment !is BackButtonListener) {
             router.exit()
         } else {
             (fragment as BackButtonListener).onBackPressed()
@@ -63,13 +54,13 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener, FragmentConta
                 return null//TODO make up smth
             }
 
-            override fun createFragment(screenKey: String, data: Any?): Fragment {
+            override fun createFragment(screenKey: String, data: Any?): Fragment? {
                 return createChildFragment(screenKey, data)
             }
         }
     }
 
-    protected abstract fun createChildFragment(screenKey: String, data: Any?): Fragment
+    protected abstract fun createChildFragment(screenKey: String, data: Any?): Fragment?
 
     protected abstract val defaultScreen: String
 

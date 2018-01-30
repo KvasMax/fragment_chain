@@ -1,4 +1,4 @@
-package com.erros.minimax.ciceronetoothpick.presentation.conversations
+package com.erros.minimax.ciceronetoothpick.presentation.chat.conversations
 
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
 import ru.terrakok.cicerone.Router

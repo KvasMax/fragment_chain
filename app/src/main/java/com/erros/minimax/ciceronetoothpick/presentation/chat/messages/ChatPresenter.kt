@@ -1,4 +1,4 @@
-package com.erros.minimax.ciceronetoothpick.presentation.chat
+package com.erros.minimax.ciceronetoothpick.presentation.chat.messages
 
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject

@@ -13,7 +13,7 @@ class BoardFragment : BaseFragment() {
         get() = R.layout.fragment
 
     override fun initViews() {
-        textView.text = "board"
+        textView.text = "Board"
     }
 
     override fun inject() {

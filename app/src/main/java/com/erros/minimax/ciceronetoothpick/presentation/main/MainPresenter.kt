@@ -36,7 +36,7 @@ class MainPresenter
     }
 
     override fun onHistoryClick() {
-        route.replaceScreen(Screens.HISTORY)
+        route.replaceScreen(Screens.GROUPED_HISTORY)
         view?.apply {
             highlightTab(TAB_HISTORY)
         }

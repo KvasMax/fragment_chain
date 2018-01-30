@@ -1,23 +1,16 @@
 package com.erros.minimax.ciceronetoothpick.presentation.base
 
 /**
- * Created by milkman on 30.01.18.
+ * Created by minimax on 1/28/18.
  */
-abstract class BasePresenter<V : BaseView> : Presenter<V> {
+interface BasePresenter<in V : BaseView> {
 
-    protected var view: V? = null
+    fun onCreate()
 
-    override fun onCreate() {
-    }
+    fun onViewAttached(view: V)
 
-    override fun onViewAttached(view: V) {
-        this.view = view
-    }
+    fun onViewDetached()
 
-    override fun onViewDetached() {
-        view = null
-    }
+    fun onDestroy()
 
-    override fun onDestroy() {
-    }
 }

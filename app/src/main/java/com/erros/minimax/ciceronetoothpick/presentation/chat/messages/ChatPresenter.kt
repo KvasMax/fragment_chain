@@ -1,6 +1,6 @@
 package com.erros.minimax.ciceronetoothpick.presentation.chat.messages
 
-import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
+import com.erros.minimax.ciceronetoothpick.presentation.base.AbstractBasePresenter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -9,7 +9,7 @@ import javax.inject.Inject
  */
 class ChatPresenter
 @Inject constructor(private val router: Router)
-    : BasePresenter<ChatContract.View>(), ChatContract.Presenter {
+    : AbstractBasePresenter<ChatContract.View>(), ChatContract.Presenter {
 
     override fun onBackPressed() {
         router.exit()

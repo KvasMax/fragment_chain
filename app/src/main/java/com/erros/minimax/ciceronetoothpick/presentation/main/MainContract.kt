@@ -17,7 +17,7 @@ interface MainContract {
         fun initFragments()
     }
 
-    interface Presenter : com.erros.minimax.ciceronetoothpick.presentation.base.Presenter<View> {
+    interface Presenter : com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter<View> {
         fun onChatClick()
         fun onBoardClick()
         fun onHistoryClick()

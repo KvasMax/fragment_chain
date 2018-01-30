@@ -1,6 +1,6 @@
 package com.erros.minimax.ciceronetoothpick.presentation.history.detail
 
-import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
+import com.erros.minimax.ciceronetoothpick.presentation.base.AbstractBasePresenter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -9,7 +9,7 @@ import javax.inject.Inject
  */
 class DetailHistoryPresenter
 @Inject constructor(private val router: Router)
-    : BasePresenter<DetailHistoryContract.View>(), DetailHistoryContract.Presenter {
+    : AbstractBasePresenter<DetailHistoryContract.View>(), DetailHistoryContract.Presenter {
 
     override fun onBackPressed() {
         router.exit()

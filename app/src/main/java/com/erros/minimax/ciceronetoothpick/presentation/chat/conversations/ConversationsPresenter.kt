@@ -1,7 +1,7 @@
 package com.erros.minimax.ciceronetoothpick.presentation.chat.conversations
 
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
-import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
+import com.erros.minimax.ciceronetoothpick.presentation.base.AbstractBasePresenter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -10,7 +10,7 @@ import javax.inject.Inject
  */
 class ConversationsPresenter
 @Inject constructor(private val router: Router)
-    : BasePresenter<ConversationsContract.View>(), ConversationsContract.Presenter {
+    : AbstractBasePresenter<ConversationsContract.View>(), ConversationsContract.Presenter {
 
     override fun onOpenChatClick() {
         router.navigateTo(Screens.CHAT)

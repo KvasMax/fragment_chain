@@ -6,7 +6,7 @@ import android.view.View
 /**
  * Created by milkman on 30.01.18.
  */
-abstract class BasePresenterFragment<out P : Presenter<V>, in V : BaseView> : BaseFragment(), BackButtonListener {
+abstract class BasePresenterFragment<out P : BasePresenter<V>, in V : BaseView> : BaseFragment(), BackButtonListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

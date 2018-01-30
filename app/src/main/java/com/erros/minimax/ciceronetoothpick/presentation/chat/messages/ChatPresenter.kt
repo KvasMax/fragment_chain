@@ -12,15 +12,23 @@ class ChatPresenter
 
     private var view: ChatContract.View? = null
 
-    override fun attachView(view: ChatContract.View) {
+    override fun onViewAttached(view: ChatContract.View) {
         this.view = view
     }
 
-    override fun detachView() {
+    override fun onViewDetached() {
         this.view = null
     }
 
     override fun onBackPressed() {
         router.exit()
+    }
+
+    override fun onCreate() {
+
+    }
+
+    override fun onDestroy() {
+
     }
 }

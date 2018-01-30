@@ -12,15 +12,21 @@ class DetailHistoryPresenter
 
     private var view: DetailHistoryContract.View? = null
 
-    override fun attachView(view: DetailHistoryContract.View) {
+    override fun onViewAttached(view: DetailHistoryContract.View) {
         this.view = view
     }
 
-    override fun detachView() {
+    override fun onViewDetached() {
         this.view = null
     }
 
     override fun onBackPressed() {
         router.exit()
+    }
+
+    override fun onCreate() {
+    }
+
+    override fun onDestroy() {
     }
 }

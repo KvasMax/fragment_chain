@@ -54,8 +54,10 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
                 return null//TODO make up smth
             }
 
-            override fun createFragment(screenKey: String, data: Any?): Fragment? {
-                return createChildFragment(screenKey, data)
+            override fun createFragment(screenKey: String?, data: Any?): Fragment? {
+                return if (screenKey == null)
+                    null
+                else createChildFragment(screenKey, data)
             }
         }
     }

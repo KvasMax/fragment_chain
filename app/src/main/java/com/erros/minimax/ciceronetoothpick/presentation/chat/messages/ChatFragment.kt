@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * Created by minimax on 1/28/18.
  */
-class ChatFragment : BasePresenterFragment(), ChatContract.View {
+class ChatFragment : BasePresenterFragment<ChatContract.Presenter, ChatContract.View>(), ChatContract.View {
 
     @Inject
     lateinit var presenter: ChatContract.Presenter
@@ -30,11 +30,6 @@ class ChatFragment : BasePresenterFragment(), ChatContract.View {
         presenter.onBackPressed()
     }
 
-    override fun attachPresenter() {
-        presenter.attachView(this)
-    }
-
-    override fun detachPresenter() {
-        presenter.detachView()
-    }
+    override val basePresenter: ChatContract.Presenter
+        get() = presenter
 }

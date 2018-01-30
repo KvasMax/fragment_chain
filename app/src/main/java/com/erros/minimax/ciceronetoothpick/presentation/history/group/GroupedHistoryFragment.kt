@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * Created by minimax on 1/28/18.
  */
-class GroupedHistoryFragment : BasePresenterFragment(), GroupedHistoryContract.View {
+class GroupedHistoryFragment : BasePresenterFragment<GroupedHistoryContract.Presenter, GroupedHistoryContract.View>(), GroupedHistoryContract.View {
 
     @Inject
     lateinit var presenter: GroupedHistoryContract.Presenter
@@ -33,11 +33,6 @@ class GroupedHistoryFragment : BasePresenterFragment(), GroupedHistoryContract.V
         presenter.onBackPressed()
     }
 
-    override fun attachPresenter() {
-        presenter.attachView(this)
-    }
-
-    override fun detachPresenter() {
-        presenter.detachView()
-    }
+    override val basePresenter: GroupedHistoryContract.Presenter
+        get() = presenter
 }

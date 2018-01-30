@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             installModules(MainActivityModule())
             Toothpick.inject(this@MainActivity, this)
         }
-        presenter.attachView(this)
+        presenter.onViewAttached(this)
     }
 
     override fun initFragments() {
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.detachView()
+        presenter.onViewDetached()
     }
 
     override fun highlightTab(tabPosition: Int) {

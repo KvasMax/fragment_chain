@@ -15,7 +15,7 @@ class MainPresenter
 
     private var view: MainContract.View? = null
 
-    override fun attachView(view: MainContract.View) {
+    override fun onViewAttached(view: MainContract.View) {
         this.view = view
         view.initFragments()
         onChatClick()
@@ -53,7 +53,13 @@ class MainPresenter
         route.exit()
     }
 
-    override fun detachView() {
+    override fun onViewDetached() {
         view = null
+    }
+
+    override fun onCreate() {
+    }
+
+    override fun onDestroy() {
     }
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * Created by minimax on 1/28/18.
  */
-class ConversationsFragment : BasePresenterFragment(), ConversationsContract.View {
+class ConversationsFragment : BasePresenterFragment<ConversationsContract.Presenter, ConversationsContract.View>(), ConversationsContract.View {
 
     @Inject
     lateinit var presenter: ConversationsContract.Presenter
@@ -29,15 +29,10 @@ class ConversationsFragment : BasePresenterFragment(), ConversationsContract.Vie
         Toothpick.inject(this, Toothpick.openScope(Scopes.CHAT_SCOPE))
     }
 
-    override fun attachPresenter() {
-        presenter.attachView(this)
-    }
-
-    override fun detachPresenter() {
-        presenter.detachView()
-    }
-
     override fun onBackPressed() {
         presenter.onBackPressed()
     }
+
+    override val basePresenter: ConversationsContract.Presenter
+        get() = presenter
 }

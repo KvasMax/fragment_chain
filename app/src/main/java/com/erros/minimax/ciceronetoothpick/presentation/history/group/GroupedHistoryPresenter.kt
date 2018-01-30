@@ -13,11 +13,11 @@ class GroupedHistoryPresenter
 
     private var view: GroupedHistoryContract.View? = null
 
-    override fun attachView(view: GroupedHistoryContract.View) {
+    override fun onViewAttached(view: GroupedHistoryContract.View) {
         this.view = view
     }
 
-    override fun detachView() {
+    override fun onViewDetached() {
         view = null
     }
 
@@ -27,5 +27,12 @@ class GroupedHistoryPresenter
 
     override fun onBackPressed() {
         router.exit()
+    }
+
+    override fun onCreate() {
+
+    }
+
+    override fun onDestroy() {
     }
 }

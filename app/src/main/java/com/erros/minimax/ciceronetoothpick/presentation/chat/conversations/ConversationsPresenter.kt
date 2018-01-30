@@ -13,7 +13,7 @@ class ConversationsPresenter
 
     private var view: ConversationsContract.View? = null
 
-    override fun attachView(view: ConversationsContract.View) {
+    override fun onViewAttached(view: ConversationsContract.View) {
         this.view = view
     }
 
@@ -21,11 +21,17 @@ class ConversationsPresenter
         router.navigateTo(Screens.CHAT)
     }
 
-    override fun detachView() {
+    override fun onViewDetached() {
         this.view = null
     }
 
     override fun onBackPressed() {
         router.exit()
+    }
+
+    override fun onCreate() {
+    }
+
+    override fun onDestroy() {
     }
 }

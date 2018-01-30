@@ -4,63 +4,73 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.erros.minimax.ciceronetoothpick.R
-import com.erros.minimax.ciceronetoothpick.di.Scopes
-import com.erros.minimax.ciceronetoothpick.di.qualifier.ScreenChain
-import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.SupportAppNavigator
-import toothpick.Toothpick
 import javax.inject.Inject
 
 /**
  * Created by milkman on 29.01.18.
  */
-abstract class ChainFragment : Fragment(), FragmentContainer {
+abstract class ChainFragment : BaseFragment(), BackButtonListener, FragmentContainer {
 
     @Inject
-    @ScreenChain
-    lateinit var cicerone: Cicerone<Router>
+    lateinit var router: Router
 
-    override fun onCreateView(inflater: LayoutInflater?,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.fragment_chain, container, false)
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
 
+    override val layout: Int
+        get() = R.layout.fragment_chain
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Toothpick.inject(this, Toothpick.openScope(Scopes.MAIN_ACTIVITY_SCOPE))
+    override fun initViews() {
     }
 
-    override fun getRouter(): Router = cicerone.router
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (childFragmentManager.fragments.isEmpty()) {
+            router.replaceScreen(defaultScreen)
+        }
+    }
 
     override fun getNavigator(): Navigator = navigator
 
     override fun onResume() {
         super.onResume()
-        cicerone.navigatorHolder.setNavigator(navigator)
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onPause() {
-        cicerone.navigatorHolder.removeNavigator()
+        navigatorHolder.removeNavigator()
         super.onPause()
     }
 
-    private val navigator = object : SupportAppNavigator(activity, childFragmentManager, R.id.contentContainer) {
-
-        override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent {
-            return Intent()
-        }
-
-        override fun createFragment(screenKey: String, data: Any?): Fragment {
-            return createFragment(screenKey, data)
+    override fun onBackPressed() {
+        val fragment = childFragmentManager.findFragmentById(R.id.contentContainer)
+        if (fragment == null) {
+            router.exit()
+        } else {
+            (fragment as BackButtonListener).onBackPressed()
         }
     }
 
-    protected abstract fun createFragment(screenKey: String, data: Any?): Fragment
+    private val navigator by lazy {
+        object : SupportAppNavigator(activity, childFragmentManager, R.id.contentContainer) {
+
+            override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
+                return null//TODO make up smth
+            }
+
+            override fun createFragment(screenKey: String, data: Any?): Fragment {
+                return createChildFragment(screenKey, data)
+            }
+        }
+    }
+
+    protected abstract fun createChildFragment(screenKey: String, data: Any?): Fragment
+
+    protected abstract val defaultScreen: String
+
 }

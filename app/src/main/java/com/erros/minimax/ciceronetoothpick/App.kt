@@ -1,8 +1,8 @@
 package com.erros.minimax.ciceronetoothpick
 
 import android.app.Application
-import com.erros.minimax.ciceronetoothpick.di.AppModule
 import com.erros.minimax.ciceronetoothpick.di.Scopes
+import com.erros.minimax.ciceronetoothpick.di.module.AppModule
 import toothpick.Toothpick
 import toothpick.configuration.Configuration
 import toothpick.registries.FactoryRegistryLocator

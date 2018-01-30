@@ -5,16 +5,18 @@ import android.support.v7.app.AppCompatActivity
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.erros.minimax.ciceronetoothpick.R
-import com.erros.minimax.ciceronetoothpick.di.PresenterModule
 import com.erros.minimax.ciceronetoothpick.di.Scopes
+import com.erros.minimax.ciceronetoothpick.di.module.MainActivityModule
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
+import com.erros.minimax.ciceronetoothpick.presentation.base.BackButtonListener
 import com.erros.minimax.ciceronetoothpick.presentation.board.BoardFragment
-import com.erros.minimax.ciceronetoothpick.presentation.conversations.ConversationsFragment
+import com.erros.minimax.ciceronetoothpick.presentation.chain.ConversationChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.history.HistoryFragment
 import com.erros.minimax.ciceronetoothpick.presentation.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.commands.Back
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import toothpick.Toothpick
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
-    private val conversationsFragment by lazy { ConversationsFragment() }
+    private val conversationChainFragment by lazy { ConversationChainFragment() }
     private val boardFragment by lazy { BoardFragment() }
     private val settingsFragment by lazy { SettingsFragment() }
     private val historyFragment by lazy { HistoryFragment() }
@@ -37,13 +39,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Toothpick.openScopes(Scopes.APP_SCOPE, Scopes.MAIN_ACTIVITY_SCOPE).apply {
-            installModules(PresenterModule())
-            Toothpick.inject(this@MainActivity, this)
-        }
+        initPresenter()
+        initViews()
 
-        presenter.attachView(this)
+    }
 
+    private fun initViews() {
         navigationView.addItem(BottomNavigationItem(android.R.drawable.ic_dialog_map, "Chat"))
                 .addItem(BottomNavigationItem(android.R.drawable.ic_dialog_map, "Board"))
                 .addItem(BottomNavigationItem(android.R.drawable.ic_dialog_map, "History"))
@@ -69,13 +70,21 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         })
     }
 
+    private fun initPresenter() {
+        Toothpick.openScopes(Scopes.APP_SCOPE, Scopes.MAIN_ACTIVITY_SCOPE).apply {
+            installModules(MainActivityModule())
+            Toothpick.inject(this@MainActivity, this)
+        }
+        presenter.attachView(this)
+    }
+
     override fun initFragments() {
         supportFragmentManager.beginTransaction()
-                .add(R.id.contentContainer, conversationsFragment)
+                .add(R.id.contentContainer, conversationChainFragment)
                 .add(R.id.contentContainer, boardFragment)
                 .add(R.id.contentContainer, settingsFragment)
                 .add(R.id.contentContainer, historyFragment)
-                .detach(conversationsFragment)
+                .detach(conversationChainFragment)
                 .detach(boardFragment)
                 .detach(settingsFragment)
                 .detach(historyFragment)
@@ -120,14 +129,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                                     .detach(historyFragment)
                                     .detach(boardFragment)
                                     .detach(settingsFragment)
-                                    .attach(conversationsFragment)
+                                    .attach(conversationChainFragment)
                                     .commitNow()
                         }
                         Screens.BOARD -> {
                             supportFragmentManager.beginTransaction()
                                     .detach(historyFragment)
                                     .detach(settingsFragment)
-                                    .detach(conversationsFragment)
+                                    .detach(conversationChainFragment)
                                     .attach(boardFragment)
                                     .commitNow()
                         }
@@ -135,19 +144,27 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                             supportFragmentManager.beginTransaction()
                                     .detach(historyFragment)
                                     .detach(boardFragment)
-                                    .detach(conversationsFragment)
+                                    .detach(conversationChainFragment)
                                     .attach(settingsFragment)
                                     .commitNow()
                         }
                         Screens.HISTORY -> {
                             supportFragmentManager.beginTransaction()
                                     .detach(boardFragment)
-                                    .detach(conversationsFragment)
+                                    .detach(conversationChainFragment)
                                     .detach(settingsFragment)
                                     .attach(historyFragment)
                                     .commitNow()
                         }
 
+                    }
+                }
+                is Back -> {
+                    val fragment = supportFragmentManager.findFragmentById(R.id.contentContainer)
+                    if (fragment == null) {
+                        finish()
+                    } else {
+                        (fragment as BackButtonListener).onBackPressed()
                     }
                 }
             }

@@ -6,4 +6,6 @@ package com.erros.minimax.ciceronetoothpick.di
 object Scopes {
     const val APP_SCOPE = "app scope"
     const val MAIN_ACTIVITY_SCOPE = "main activity scope"
+    const val CHAT_SCOPE = "CHAT_SCOPE"
+    const val HISTORY_SCOPE = "HISTORY_SCOPE"
 }

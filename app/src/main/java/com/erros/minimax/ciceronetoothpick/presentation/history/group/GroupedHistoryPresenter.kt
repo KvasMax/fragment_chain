@@ -1,6 +1,7 @@
 package com.erros.minimax.ciceronetoothpick.presentation.history.group
 
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
+import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -9,17 +10,7 @@ import javax.inject.Inject
  */
 class GroupedHistoryPresenter
 @Inject constructor(private val router: Router)
-    : GroupedHistoryContract.Presenter {
-
-    private var view: GroupedHistoryContract.View? = null
-
-    override fun onViewAttached(view: GroupedHistoryContract.View) {
-        this.view = view
-    }
-
-    override fun onViewDetached() {
-        view = null
-    }
+    : BasePresenter<GroupedHistoryContract.View>(), GroupedHistoryContract.Presenter {
 
     override fun onOpenDetailClick() {
         router.navigateTo(Screens.DETAIL_HISTORY)
@@ -29,10 +20,4 @@ class GroupedHistoryPresenter
         router.exit()
     }
 
-    override fun onCreate() {
-
-    }
-
-    override fun onDestroy() {
-    }
 }

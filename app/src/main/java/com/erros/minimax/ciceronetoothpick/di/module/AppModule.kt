@@ -10,8 +10,6 @@ class AppModule(context: Context): Module() {
 
     init {
         bind(Context::class.java).toInstance(context.applicationContext)
-
-
     }
 
 

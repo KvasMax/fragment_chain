@@ -26,7 +26,7 @@ class ConversationsFragment : BasePresenterFragment<ConversationsContract.Presen
     }
 
     override fun inject() {
-        Toothpick.inject(this, Toothpick.openScope(Scopes.CHAT_SCOPE))
+        Toothpick.inject(this, Toothpick.openScope(Scopes.CHAT))
     }
 
     override fun onBackPressed() {

@@ -4,8 +4,8 @@ package com.erros.minimax.ciceronetoothpick.di
  * Created by minimax on 1/28/18.
  */
 object Scopes {
-    const val APP_SCOPE = "app scope"
-    const val MAIN_ACTIVITY_SCOPE = "main activity scope"
-    const val CHAT_SCOPE = "CHAT_SCOPE"
-    const val HISTORY_SCOPE = "HISTORY_SCOPE"
+    const val APP = "APP"
+    const val MAIN_SCREEN = "MAIN_SCREEN"
+    const val CHAT = "CHAT"
+    const val HISTORY = "HISTORY"
 }

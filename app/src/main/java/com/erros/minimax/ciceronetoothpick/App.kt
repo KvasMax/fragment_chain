@@ -16,6 +16,11 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        initToothpick()
+        openAppScope()
+    }
+
+    private fun initToothpick() {
         val configuration = if (BuildConfig.DEBUG) Configuration.forDevelopment() else Configuration.forProduction()
 
         configuration.disableReflection()
@@ -23,10 +28,10 @@ class App : Application() {
 
         FactoryRegistryLocator.setRootRegistry(com.erros.minimax.ciceronetoothpick.FactoryRegistry())
         MemberInjectorRegistryLocator.setRootRegistry(com.erros.minimax.ciceronetoothpick.MemberInjectorRegistry())
+    }
 
-
-        val appScope = Toothpick.openScope(Scopes.APP_SCOPE)
+    private fun openAppScope() {
+        val appScope = Toothpick.openScope(Scopes.APP)
         appScope.installModules(AppModule(this))
-
     }
 }

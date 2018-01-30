@@ -26,7 +26,7 @@ class GroupedHistoryFragment : BasePresenterFragment<GroupedHistoryContract.Pres
     }
 
     override fun inject() {
-        Toothpick.inject(this, Toothpick.openScope(Scopes.HISTORY_SCOPE))
+        Toothpick.inject(this, Toothpick.openScope(Scopes.HISTORY))
     }
 
     override fun onBackPressed() {

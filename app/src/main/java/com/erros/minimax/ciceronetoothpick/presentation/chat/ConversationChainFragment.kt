@@ -24,7 +24,7 @@ class ConversationChainFragment : ChainFragment() {
         get() = Screens.CONVERSATIONS
 
     override fun inject() {
-        Toothpick.openScope(Scopes.CHAT_SCOPE).apply {
+        Toothpick.openScopes(Scopes.MAIN_ACTIVITY_SCOPE, Scopes.CHAT_SCOPE).apply {
             installModules(ChatModule())
             Toothpick.inject(this@ConversationChainFragment, this)
         }

@@ -24,7 +24,9 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
         get() = R.layout.fragment_chain
 
     override fun initViews() {
-        router.replaceScreen(defaultScreen)
+        if (childFragmentManager.fragments.isEmpty()) {
+            router.replaceScreen(defaultScreen)
+        }
     }
 
     override fun onResume() {

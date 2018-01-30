@@ -24,7 +24,7 @@ class HistoryChainFragment : ChainFragment() {
         get() = Screens.GROUPED_HISTORY
 
     override fun inject() {
-        Toothpick.openScope(Scopes.HISTORY_SCOPE).apply {
+        Toothpick.openScopes(Scopes.MAIN_ACTIVITY_SCOPE, Scopes.HISTORY_SCOPE).apply {
             installModules(HistoryModule())
             Toothpick.inject(this@HistoryChainFragment, this)
         }

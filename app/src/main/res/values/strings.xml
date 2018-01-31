@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CiceroneToothpick</string>
+    <string name="pic_url">https://picsum.photos</string>
 </resources>

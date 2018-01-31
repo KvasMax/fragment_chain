@@ -1,5 +1,6 @@
 package com.erros.minimax.ciceronetoothpick.presentation.main
 
+import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
 import com.erros.minimax.ciceronetoothpick.presentation.base.BaseView
 
 /**
@@ -17,7 +18,7 @@ interface MainContract {
         fun initFragments()
     }
 
-    interface Presenter : com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter<View> {
+    interface Presenter : BasePresenter<View> {
         fun onChatClick()
         fun onBoardClick()
         fun onHistoryClick()

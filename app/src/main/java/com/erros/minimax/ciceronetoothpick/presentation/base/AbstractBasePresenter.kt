@@ -1,5 +1,7 @@
 package com.erros.minimax.ciceronetoothpick.presentation.base
 
+import timber.log.Timber
+
 /**
  * Created by milkman on 30.01.18.
  */
@@ -19,5 +21,9 @@ abstract class AbstractBasePresenter<V : BaseView> : BasePresenter<V> {
     }
 
     override fun onDestroy() {
+    }
+
+    protected fun handleError(t: Throwable) {
+        Timber.e(t)
     }
 }

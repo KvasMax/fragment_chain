@@ -9,7 +9,7 @@ import com.erros.minimax.ciceronetoothpick.di.Scopes
 import com.erros.minimax.ciceronetoothpick.di.module.MainActivityModule
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
 import com.erros.minimax.ciceronetoothpick.presentation.base.BackButtonListener
-import com.erros.minimax.ciceronetoothpick.presentation.board.BoardFragment
+import com.erros.minimax.ciceronetoothpick.presentation.board.BoardChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.chat.ConversationChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.history.HistoryChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.settings.SettingsFragment
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var navigatorHolder: NavigatorHolder
 
     private val conversationChainFragment by lazy { ConversationChainFragment() }
-    private val boardFragment by lazy { BoardFragment() }
+    private val boardFragment by lazy { BoardChainFragment() }
     private val settingsFragment by lazy { SettingsFragment() }
     private val historyFragment by lazy { HistoryChainFragment() }
 

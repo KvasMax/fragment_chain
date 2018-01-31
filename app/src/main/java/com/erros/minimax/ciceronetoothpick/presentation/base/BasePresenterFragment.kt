@@ -13,7 +13,7 @@ abstract class BasePresenterFragment<out P : BasePresenter<V>, in V : BaseView> 
         basePresenter.onCreate()
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         basePresenter.onViewAttached(presenterView)
     }

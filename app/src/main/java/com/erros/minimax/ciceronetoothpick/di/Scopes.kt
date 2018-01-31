@@ -8,4 +8,5 @@ object Scopes {
     const val MAIN_SCREEN = "MAIN_SCREEN"
     const val CHAT = "CHAT"
     const val HISTORY = "HISTORY"
+    const val BOARD = "BOARD"
 }

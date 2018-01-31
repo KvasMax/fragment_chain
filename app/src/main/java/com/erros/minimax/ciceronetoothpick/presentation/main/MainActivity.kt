@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private fun initPresenter() {
         Toothpick.openScopes(Scopes.APP, Scopes.MAIN_SCREEN).apply {
-            installModules(MainActivityModule())
+            installModules(MainActivityModule(this@MainActivity))
             Toothpick.inject(this@MainActivity, this)
         }
         presenter.onViewAttached(this)

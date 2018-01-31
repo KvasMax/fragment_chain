@@ -3,6 +3,7 @@ package com.erros.minimax.ciceronetoothpick
 import android.app.Application
 import com.erros.minimax.ciceronetoothpick.di.Scopes
 import com.erros.minimax.ciceronetoothpick.di.module.AppModule
+import timber.log.Timber
 import toothpick.Toothpick
 import toothpick.configuration.Configuration
 import toothpick.registries.FactoryRegistryLocator
@@ -18,6 +19,7 @@ class App : Application() {
 
         initToothpick()
         openAppScope()
+        initLogger()
     }
 
     private fun initToothpick() {
@@ -33,5 +35,11 @@ class App : Application() {
     private fun openAppScope() {
         val appScope = Toothpick.openScope(Scopes.APP)
         appScope.installModules(AppModule(this))
+    }
+
+    private fun initLogger() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }

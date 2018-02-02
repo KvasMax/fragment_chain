@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import com.erros.minimax.ciceronetoothpick.R
+import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.SupportAppNavigator
+import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Forward
 import javax.inject.Inject
 
@@ -111,6 +113,18 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
                 } else {
                     exit()
                 }
+            }
+        }
+    }
+
+    private val navigatorR by lazy {
+        object : Navigator {
+            override fun applyCommands(commands: Array<out Command>?) {
+
+            }
+
+            private fun forward() {
+
             }
         }
     }

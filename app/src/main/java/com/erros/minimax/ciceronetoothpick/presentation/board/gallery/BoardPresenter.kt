@@ -36,14 +36,13 @@ class BoardPresenter
                             handleError(it)
                         })
         )
-
     }
 
     override fun onViewAttached(view: BoardContract.View) {
         super.onViewAttached(view)
         if (buffer.isNotEmpty()) {
-            for (url in buffer) {
-                view.addImageToList(url)
+            for (picture in buffer) {
+                view.addImageToList(picture)
             }
             buffer.clear()
         }

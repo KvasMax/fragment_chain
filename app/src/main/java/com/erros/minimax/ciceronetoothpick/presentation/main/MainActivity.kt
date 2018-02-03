@@ -83,17 +83,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     private fun initFragments() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.contentContainer, conversationChainFragment)
-                .add(R.id.contentContainer, boardFragment)
-                .add(R.id.contentContainer, settingsFragment)
-                .add(R.id.contentContainer, historyFragment)
-                .detach(conversationChainFragment)
-                .detach(boardFragment)
-                .detach(settingsFragment)
-                .detach(historyFragment)
-                .commitNow()
-
+        supportFragmentManager.beginTransaction().apply {
+            for (fragment in fragmentList) {
+                add(R.id.contentContainer, fragment)
+                detach(fragment)
+            }
+        }.commitNow()
     }
 
     override fun onResumeFragments() {

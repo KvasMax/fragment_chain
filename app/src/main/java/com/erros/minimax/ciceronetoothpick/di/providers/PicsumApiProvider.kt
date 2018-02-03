@@ -1,7 +1,7 @@
 package com.erros.minimax.ciceronetoothpick.di.providers
 
+import com.erros.minimax.ciceronetoothpick.data.network.PicsumApi
 import com.erros.minimax.ciceronetoothpick.di.qualifier.PicServerPath
-import com.erros.minimax.ciceronetoothpick.model.network.PicsumApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

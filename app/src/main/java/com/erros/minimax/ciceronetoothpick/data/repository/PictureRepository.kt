@@ -1,7 +1,7 @@
-package com.erros.minimax.ciceronetoothpick.model.repository
+package com.erros.minimax.ciceronetoothpick.data.repository
 
-import com.erros.minimax.ciceronetoothpick.Picture
-import com.erros.minimax.ciceronetoothpick.model.network.PicsumApi
+import com.erros.minimax.ciceronetoothpick.data.network.PicsumApi
+import com.erros.minimax.ciceronetoothpick.domain.model.Picture
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import java.util.concurrent.TimeUnit

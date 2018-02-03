@@ -1,6 +1,6 @@
-package com.erros.minimax.ciceronetoothpick.model.network
+package com.erros.minimax.ciceronetoothpick.data.network
 
-import com.erros.minimax.ciceronetoothpick.model.dto.Image
+import com.erros.minimax.ciceronetoothpick.data.model.Image
 import io.reactivex.Single
 import retrofit2.http.GET
 

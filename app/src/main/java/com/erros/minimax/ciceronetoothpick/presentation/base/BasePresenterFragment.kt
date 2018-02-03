@@ -21,6 +21,16 @@ abstract class BasePresenterFragment<out P : BasePresenter<V>, in V : BaseView> 
         basePresenter.onViewAttached(presenterView)
     }
 
+    override fun onResume() {
+        super.onResume()
+        Timber.d("onResume ${javaClass.simpleName}")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.d("onPause ${javaClass.simpleName}")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Timber.d("onDestroyView ${javaClass.simpleName}")

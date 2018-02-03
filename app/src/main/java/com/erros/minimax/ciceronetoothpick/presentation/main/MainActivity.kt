@@ -1,6 +1,7 @@
 package com.erros.minimax.ciceronetoothpick.presentation.main
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
@@ -35,13 +36,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private val settingsFragment by lazy { SettingsFragment() }
     private val historyFragment by lazy { HistoryChainFragment() }
 
+    private val fragmentList by lazy { arrayOf(conversationChainFragment, boardFragment, settingsFragment, historyFragment) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initPresenter()
+        initFragments()
         initViews()
 
+        presenter.onViewAttached(this)
     }
 
     private fun initViews() {
@@ -75,10 +80,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             installModules(MainActivityModule(this@MainActivity))
             Toothpick.inject(this@MainActivity, this)
         }
-        presenter.onViewAttached(this)
     }
 
-    override fun initFragments() {
+    private fun initFragments() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.contentContainer, conversationChainFragment)
                 .add(R.id.contentContainer, boardFragment)
@@ -89,6 +93,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 .detach(settingsFragment)
                 .detach(historyFragment)
                 .commitNow()
+
     }
 
     override fun onResumeFragments() {
@@ -116,6 +121,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private val navigator = object : Navigator {
 
+        private var currentFragment: Fragment? = null
+
         override fun applyCommands(commands: Array<out Command>) {
             for (command in commands) applyCommand(command)
         }
@@ -123,50 +130,39 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         private fun applyCommand(command: Command) {
             when (command) {
                 is Replace -> {
+                    var fragment: Fragment? = null
                     when (command.screenKey) {
                         Screens.CONVERSATIONS -> {
-                            supportFragmentManager.beginTransaction()
-                                    .detach(historyFragment)
-                                    .detach(boardFragment)
-                                    .detach(settingsFragment)
-                                    .attach(conversationChainFragment)
-                                    .commitNow()
+                            fragment = conversationChainFragment
                         }
                         Screens.BOARD -> {
-                            supportFragmentManager.beginTransaction()
-                                    .detach(historyFragment)
-                                    .detach(settingsFragment)
-                                    .detach(conversationChainFragment)
-                                    .attach(boardFragment)
-                                    .commitNow()
+                            fragment = boardFragment
                         }
                         Screens.SETTINGS -> {
-                            supportFragmentManager.beginTransaction()
-                                    .detach(historyFragment)
-                                    .detach(boardFragment)
-                                    .detach(conversationChainFragment)
-                                    .attach(settingsFragment)
-                                    .commitNow()
+                            fragment = settingsFragment
                         }
                         Screens.GROUPED_HISTORY -> {
-                            supportFragmentManager.beginTransaction()
-                                    .detach(boardFragment)
-                                    .detach(conversationChainFragment)
-                                    .detach(settingsFragment)
-                                    .attach(historyFragment)
-                                    .commitNow()
+                            fragment = historyFragment
                         }
-
+                    }
+                    fragment?.let {
+                        if (currentFragment != it) {
+                            val transaction = supportFragmentManager.beginTransaction()
+                            for (frag in fragmentList.filter { f -> f.isResumed }) {
+                                transaction.hide(frag)
+                            }
+                            if (it.isAdded) {
+                                transaction.show(it)
+                            } else {
+                                transaction.attach(it)
+                            }
+                            transaction.commitNow()
+                            currentFragment = it
+                        }
                     }
                 }
                 is Back -> {
-                    val fragment = supportFragmentManager.findFragmentById(R.id.contentContainer)
-                    if (fragment == null
-                            || fragment !is BackButtonListener) {
-                        finish()
-                    } else {
-                        (fragment as BackButtonListener).onBackPressed()
-                    }
+                    (currentFragment as? BackButtonListener)?.onBackPressed() ?: finish()
                 }
             }
         }

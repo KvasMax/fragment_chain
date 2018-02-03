@@ -1,15 +1,9 @@
 package com.erros.minimax.ciceronetoothpick.presentation.base
 
-import android.content.Context
-import android.content.Intent
 import android.support.v4.app.Fragment
 import com.erros.minimax.ciceronetoothpick.R
-import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
-import ru.terrakok.cicerone.android.SupportAppNavigator
-import ru.terrakok.cicerone.commands.Command
-import ru.terrakok.cicerone.commands.Forward
 import javax.inject.Inject
 
 /**
@@ -53,79 +47,11 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
     }
 
     private val navigator by lazy {
-        object : SupportAppNavigator(activity, childFragmentManager, R.id.contentContainer) {
+        object : FragmentChainNavigator(R.id.contentContainer, childFragmentManager, activity) {
 
-            override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
-                return null//TODO make up smth
-            }
+            override fun createFragment(screenKey: String, data: Any?): Fragment?
+                    = createChildFragment(screenKey, data)
 
-            override fun createFragment(screenKey: String?, data: Any?): Fragment? {
-                return if (screenKey == null)
-                    null
-                else createChildFragment(screenKey, data)
-            }
-
-            override fun forward(command: Forward) {
-                val newFragment = createFragment(command.screenKey, command.transitionData)
-
-                if (newFragment == null) {
-                    unknownScreen(command)
-                    return
-                }
-
-                childFragmentManager?.apply {
-
-                    fragments.filterNot { it.isHidden }
-                            .forEach {
-                                beginTransaction()
-                                        .hide(it)
-                                        .commitNow()
-                            }
-
-                    val transaction = beginTransaction()
-
-                    setupFragmentTransactionAnimation(
-                            command,
-                            findFragmentById(R.id.contentContainer),
-                            newFragment,
-                            transaction
-                    )
-
-                    transaction
-                            .add(R.id.contentContainer, newFragment, command.screenKey)
-                            .addToBackStack(command.screenKey)
-                            .commit()
-                    localStackCopy.add(command.screenKey)
-                }
-            }
-
-            override fun back() {
-                if (localStackCopy.size > 0) {
-                    childFragmentManager?.apply {
-                        popBackStackImmediate()
-                        localStackCopy.pop()
-                        if (fragments.isNotEmpty()) {
-                            beginTransaction()
-                                    .show(fragments.last())
-                                    .commitNow()
-                        }
-                    }
-                } else {
-                    exit()
-                }
-            }
-        }
-    }
-
-    private val navigatorR by lazy {
-        object : Navigator {
-            override fun applyCommands(commands: Array<out Command>?) {
-
-            }
-
-            private fun forward() {
-
-            }
         }
     }
 

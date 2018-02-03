@@ -1,10 +1,10 @@
 package com.erros.minimax.ciceronetoothpick.di.module
 
+import com.erros.minimax.ciceronetoothpick.data.network.PicsumApi
+import com.erros.minimax.ciceronetoothpick.data.repository.PictureRepository
 import com.erros.minimax.ciceronetoothpick.di.providers.PicServerPathProvider
 import com.erros.minimax.ciceronetoothpick.di.providers.PicsumApiProvider
 import com.erros.minimax.ciceronetoothpick.di.qualifier.PicServerPath
-import com.erros.minimax.ciceronetoothpick.model.network.PicsumApi
-import com.erros.minimax.ciceronetoothpick.model.repository.PictureRepository
 import com.erros.minimax.ciceronetoothpick.presentation.board.gallery.BoardContract
 import com.erros.minimax.ciceronetoothpick.presentation.board.gallery.BoardPresenter
 

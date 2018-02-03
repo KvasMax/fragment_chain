@@ -1,6 +1,7 @@
 package com.erros.minimax.ciceronetoothpick.presentation.base
 
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import ru.terrakok.cicerone.Navigator
@@ -11,45 +12,39 @@ import java.util.*
  * Created by milkman on 02.02.18.
  */
 abstract class FragmentChainNavigator
-constructor(private val containerId: Int, private val fragmentManager: FragmentManager)
+constructor(private val containerId: Int,
+            private val fragmentManager: FragmentManager,
+            private val activity: FragmentActivity?)
     : Navigator {
 
     private var localStackCopy = LinkedList<String>()
 
     override fun applyCommands(commands: Array<out Command>) {
         fragmentManager.executePendingTransactions()
-
         copyStackToLocal()
-
         for (command in commands) {
             applyCommand(command)
         }
     }
 
     private fun copyStackToLocal() {
-        localStackCopy = LinkedList<>()
-
-        val stackSize = fragmentManager.backStackEntryCount
-        for (i in 0 until stackSize) {
+        localStackCopy = LinkedList<String>()
+        for (i in 0 until fragmentManager.backStackEntryCount) {
             localStackCopy.add(fragmentManager.getBackStackEntryAt(i).name)
         }
     }
 
     private fun applyCommand(command: Command) {
-        if (command is Forward) {
-            forward(command as Forward)
-        } else if (command is Back) {
-            back()
-        } else if (command is Replace) {
-            replace(command)
-        } else if (command is BackTo) {
-            backTo(command)
-        } else if (command is SystemMessage) {
-            showSystemMessage(command.message)
+        when (command) {
+            is Forward -> forward(command)
+            is Back -> back()
+            is Replace -> replace(command)
+            is BackTo -> backTo(command)
+            is SystemMessage -> showSystemMessage(command.message)
         }
     }
 
-    private fun forward(command: Forward) {
+    protected open fun forward(command: Forward) {
         val newFragment = createFragment(command.screenKey, command.transitionData)
 
         if (newFragment == null) {
@@ -57,33 +52,31 @@ constructor(private val containerId: Int, private val fragmentManager: FragmentM
             return
         }
 
-        fragmentManager.apply {
+        fragmentManager.fragments.filter { it.isResumed }
+                .forEach {
+                    fragmentManager.beginTransaction()
+                            .hide(it)
+                            .commitNow()
+                }
 
-            fragments.filterNot { it.isHidden }
-                    .forEach {
-                        beginTransaction()
-                                .hide(it)
-                                .commitNow()
-                    }
+        val transaction = fragmentManager.beginTransaction()
 
-            val transaction = beginTransaction()
+        setupFragmentTransactionAnimation(
+                command,
+                fragmentManager.findFragmentById(containerId),
+                newFragment,
+                transaction
+        )
 
-            setupFragmentTransactionAnimation(
-                    command,
-                    findFragmentById(containerId),
-                    newFragment,
-                    transaction
-            )
+        transaction
+                .add(containerId, newFragment, command.screenKey)
+                .addToBackStack(command.screenKey)
+                .commit()
 
-            transaction
-                    .add(containerId, newFragment, command.screenKey)
-                    .addToBackStack(command.screenKey)
-                    .commit()
-            localStackCopy.add(command.screenKey)
-        }
+        localStackCopy.add(command.screenKey)
     }
 
-    override fun back() {
+    protected open fun back() {
         if (localStackCopy.size > 0) {
             fragmentManager.apply {
                 popBackStackImmediate()
@@ -99,16 +92,94 @@ constructor(private val containerId: Int, private val fragmentManager: FragmentM
         }
     }
 
-    private fun unknownScreen(command: Command) {
+    protected open fun replace(command: Replace) {
+        val fragment = createFragment(command.screenKey, command.transitionData)
+
+        if (fragment == null) {
+            unknownScreen(command)
+            return
+        }
+
+        if (localStackCopy.size > 0) {
+            fragmentManager.popBackStack()
+            localStackCopy.pop()
+
+            val fragmentTransaction = fragmentManager.beginTransaction()
+
+            setupFragmentTransactionAnimation(
+                    command,
+                    fragmentManager.findFragmentById(containerId),
+                    fragment,
+                    fragmentTransaction
+            )
+
+            fragmentTransaction
+                    .replace(containerId, fragment)
+                    .addToBackStack(command.screenKey)
+                    .commit()
+            localStackCopy.add(command.screenKey)
+
+        } else {
+            val fragmentTransaction = fragmentManager.beginTransaction()
+
+            setupFragmentTransactionAnimation(
+                    command,
+                    fragmentManager.findFragmentById(containerId),
+                    fragment,
+                    fragmentTransaction
+            )
+
+            fragmentTransaction
+                    .replace(containerId, fragment)
+                    .commit()
+        }
+    }
+
+    protected open fun backTo(command: BackTo) {
+        val key = command.screenKey
+
+        if (key == null) {
+            backToRoot()
+
+        } else {
+            val index = localStackCopy.indexOf(key)
+            val size = localStackCopy.size
+
+            if (index != -1) {
+                for (i in 1 until size - index) {
+                    localStackCopy.pop()
+                }
+                fragmentManager.popBackStack(key, 0)
+            } else {
+                backToUnexisting(command.screenKey)
+            }
+        }
+    }
+
+    protected open fun backToRoot() {
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        localStackCopy.clear()
+    }
+
+    protected open fun backToUnexisting(screenKey: String) {
+        backToRoot()
+    }
+
+    protected open fun unknownScreen(command: Command) {
         throw RuntimeException("Can't create a screen for passed screenKey.")
     }
 
-    protected abstract fun exit()
+    protected open fun exit() {
+        activity?.finish()
+    }
 
-    protected abstract fun createFragment(screenKey: String, data: Any): Fragment?
+    protected abstract fun createFragment(screenKey: String, data: Any?): Fragment?
+
+    protected open fun showSystemMessage(message: String) {
+    }
 
     protected fun setupFragmentTransactionAnimation(command: Command,
-                                                    currentFragment: Fragment,
+                                                    currentFragment: Fragment?,
                                                     nextFragment: Fragment,
                                                     fragmentTransaction: FragmentTransaction) {
     }

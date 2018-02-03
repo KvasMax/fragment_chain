@@ -15,7 +15,6 @@ interface MainContract {
         val TAB_SETTINGS get() = 3
 
         fun highlightTab(tabPosition: Int)
-        fun initFragments()
     }
 
     interface Presenter : BasePresenter<View> {

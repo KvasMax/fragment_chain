@@ -1,4 +1,4 @@
-package com.erros.minimax.ciceronetoothpick.model.dto
+package com.erros.minimax.ciceronetoothpick.data.model
 
 import com.google.gson.annotations.SerializedName
 

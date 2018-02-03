@@ -3,9 +3,9 @@ package com.erros.minimax.ciceronetoothpick.presentation.board.gallery
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.erros.minimax.ciceronetoothpick.Picture
 import com.erros.minimax.ciceronetoothpick.R
 import com.erros.minimax.ciceronetoothpick.di.Scopes
+import com.erros.minimax.ciceronetoothpick.domain.model.Picture
 import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenterFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import net.idik.lib.slimadapter.SlimAdapter

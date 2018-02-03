@@ -1,7 +1,7 @@
 package com.erros.minimax.ciceronetoothpick.presentation.board.gallery
 
-import com.erros.minimax.ciceronetoothpick.Picture
-import com.erros.minimax.ciceronetoothpick.model.repository.PictureRepository
+import com.erros.minimax.ciceronetoothpick.data.repository.PictureRepository
+import com.erros.minimax.ciceronetoothpick.domain.model.Picture
 import com.erros.minimax.ciceronetoothpick.presentation.base.AbstractBasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

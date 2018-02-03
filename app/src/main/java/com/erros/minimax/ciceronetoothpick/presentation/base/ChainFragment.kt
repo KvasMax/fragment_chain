@@ -38,12 +38,7 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
 
     override fun onBackPressed() {
         val fragment = if (childFragmentManager.fragments.isEmpty()) null else childFragmentManager.fragments.last()
-        if (fragment == null
-                || fragment !is BackButtonListener) {
-            router.exit()
-        } else {
-            (fragment as BackButtonListener).onBackPressed()
-        }
+        (fragment as? BackButtonListener)?.onBackPressed() ?: router.exit()
     }
 
     private val navigator by lazy {

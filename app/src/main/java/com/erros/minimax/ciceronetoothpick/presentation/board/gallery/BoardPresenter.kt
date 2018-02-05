@@ -2,6 +2,7 @@ package com.erros.minimax.ciceronetoothpick.presentation.board.gallery
 
 import com.erros.minimax.ciceronetoothpick.data.repository.PictureRepository
 import com.erros.minimax.ciceronetoothpick.domain.model.Picture
+import com.erros.minimax.ciceronetoothpick.presentation.Screens
 import com.erros.minimax.ciceronetoothpick.presentation.base.AbstractBasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -55,6 +56,10 @@ class BoardPresenter
         }, {
             handleError(it)
         })
+    }
+
+    override fun onPictureClick(url: String) {
+        router.navigateTo(Screens.PICTURE, url)
     }
 
     override fun onBackPressed() {

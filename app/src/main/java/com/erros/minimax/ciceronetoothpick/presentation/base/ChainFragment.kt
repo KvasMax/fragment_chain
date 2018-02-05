@@ -44,18 +44,21 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
         (fragment as? BackButtonListener)?.onBackPressed() ?: router.exit()
     }
 
-    private val navigator by lazy {
+    protected val navigator: FragmentChainNavigator by lazy {
         object : FragmentChainNavigator(R.id.contentContainer, childFragmentManager, activity) {
 
             override fun createFragment(screenKey: String, data: Any?): Fragment? = createChildFragment(screenKey, data)
 
             override fun setupFragmentTransactionAnimation(command: Command, currentFragment: Fragment?, nextFragment: Fragment, fragmentTransaction: FragmentTransaction) {
-                when (command) {
-                    is Forward -> fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    else -> fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                }
-
+                this@ChainFragment.setupFragmentTransactionAnimation(command, currentFragment, nextFragment, fragmentTransaction)
             }
+        }
+    }
+
+    protected open fun setupFragmentTransactionAnimation(command: Command, currentFragment: Fragment?, nextFragment: Fragment, fragmentTransaction: FragmentTransaction) {
+        when (command) {
+            is Forward -> fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            else -> fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
         }
     }
 

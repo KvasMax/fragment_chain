@@ -9,4 +9,5 @@ object Scopes {
     const val CHAT = "CHAT"
     const val HISTORY = "HISTORY"
     const val BOARD = "BOARD"
+    const val PICTURE = "PICTURE"
 }

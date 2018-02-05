@@ -17,7 +17,7 @@ class PictureRepository
             picsumApi.getImageList().flatMapObservable { Observable.fromIterable(it) },
             Observable.interval(500, TimeUnit.MILLISECONDS),
             BiFunction { item, time ->
-                Picture("https://picsum.photos/600/200?image=${item.id}", item.id)
+                Picture("https://picsum.photos/200/200?image=${item.id}", item.id)
             }
 
     )

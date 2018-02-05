@@ -1,21 +1,18 @@
-package com.erros.minimax.ciceronetoothpick.presentation.board.gallery
+package com.erros.minimax.ciceronetoothpick.presentation.board.picture
 
-import com.erros.minimax.ciceronetoothpick.domain.model.Picture
 import com.erros.minimax.ciceronetoothpick.presentation.base.BackButtonListener
 import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
 import com.erros.minimax.ciceronetoothpick.presentation.base.BaseView
 
 /**
- * Created by milkman on 31.01.18.
+ * Created by milkman on 05.02.18.
  */
-interface BoardContract {
+interface PictureContract {
 
     interface View : BaseView {
-        fun addImageToList(picture: Picture)
+        fun showPicture(url: String)
     }
 
     interface Presenter : BasePresenter<View>, BackButtonListener {
-        fun onPictureClick(url: String)
     }
-
 }

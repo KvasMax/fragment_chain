@@ -17,6 +17,8 @@ constructor(private val containerId: Int,
             private val activity: FragmentActivity?)
     : Navigator {
 
+    public var preventFragmentDestruction = true
+
     private var localStackCopy = LinkedList<String>()
 
     override fun applyCommands(commands: Array<out Command>) {
@@ -58,7 +60,11 @@ constructor(private val containerId: Int,
         val currentFragment = if (fragmentManager.fragments.isEmpty()) null else fragmentManager.fragments.last()
 
         currentFragment?.let {
-            transaction.hide(it)
+            if (preventFragmentDestruction) {
+                transaction.hide(it)
+            } else {
+                transaction.detach(it)
+            }
         }
 
         setupFragmentTransactionAnimation(

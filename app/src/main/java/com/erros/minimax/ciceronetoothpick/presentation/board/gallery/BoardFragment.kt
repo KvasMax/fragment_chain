@@ -1,6 +1,8 @@
 package com.erros.minimax.ciceronetoothpick.presentation.board.gallery
 
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v4.view.ViewCompat
+import android.support.v7.widget.GridLayoutManager
+import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.erros.minimax.ciceronetoothpick.R
@@ -34,9 +36,18 @@ class BoardFragment : BasePresenterFragment<BoardContract.Presenter, BoardContra
                         activity?.apply {
                             Glide.with(this).load(picture.url).into(it)
                         }
+                        ViewCompat.setTransitionName(it, picture.id.toString())
+                    }).clicked(R.id.imageView, {
+                        clickedView = it
+                        presenter.onPictureClick(picture.url)
                     })
                 })
     }
+
+    var clickedView: View? = null
+        private set(value) {
+            field = value
+        }
 
     private val imageList = ArrayList<Picture>()
 
@@ -45,7 +56,7 @@ class BoardFragment : BasePresenterFragment<BoardContract.Presenter, BoardContra
 
     override fun initViews() {
         adapter.attachTo(recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = GridLayoutManager(activity, 3)
     }
 
     override fun addImageToList(picture: Picture) {

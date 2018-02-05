@@ -1,9 +1,12 @@
 package com.erros.minimax.ciceronetoothpick.presentation.base
 
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import com.erros.minimax.ciceronetoothpick.R
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.commands.Command
+import ru.terrakok.cicerone.commands.Forward
 import javax.inject.Inject
 
 /**
@@ -44,9 +47,15 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
     private val navigator by lazy {
         object : FragmentChainNavigator(R.id.contentContainer, childFragmentManager, activity) {
 
-            override fun createFragment(screenKey: String, data: Any?): Fragment?
-                    = createChildFragment(screenKey, data)
+            override fun createFragment(screenKey: String, data: Any?): Fragment? = createChildFragment(screenKey, data)
 
+            override fun setupFragmentTransactionAnimation(command: Command, currentFragment: Fragment?, nextFragment: Fragment, fragmentTransaction: FragmentTransaction) {
+                when (command) {
+                    is Forward -> fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    else -> fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                }
+
+            }
         }
     }
 

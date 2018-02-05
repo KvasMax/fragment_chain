@@ -63,7 +63,7 @@ constructor(private val containerId: Int,
 
         setupFragmentTransactionAnimation(
                 command,
-                fragmentManager.findFragmentById(containerId),
+                if (fragmentManager.fragments.isEmpty()) null else fragmentManager.fragments.last(),
                 newFragment,
                 transaction
         )
@@ -178,9 +178,9 @@ constructor(private val containerId: Int,
     protected open fun showSystemMessage(message: String) {
     }
 
-    protected fun setupFragmentTransactionAnimation(command: Command,
-                                                    currentFragment: Fragment?,
-                                                    nextFragment: Fragment,
-                                                    fragmentTransaction: FragmentTransaction) {
+    protected open fun setupFragmentTransactionAnimation(command: Command,
+                                                         currentFragment: Fragment?,
+                                                         nextFragment: Fragment,
+                                                         fragmentTransaction: FragmentTransaction) {
     }
 }

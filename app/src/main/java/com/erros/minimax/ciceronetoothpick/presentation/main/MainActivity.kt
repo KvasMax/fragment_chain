@@ -2,6 +2,7 @@ package com.erros.minimax.ciceronetoothpick.presentation.main
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
@@ -143,6 +144,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     fragment?.let {
                         if (currentFragment != it) {
                             val transaction = supportFragmentManager.beginTransaction()
+                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+
                             for (frag in fragmentList.filter { f -> f.isResumed }) {
                                 transaction.hide(frag)
                             }

@@ -146,8 +146,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                             val transaction = supportFragmentManager.beginTransaction()
                                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 
-                            for (frag in fragmentList.filter { f -> f.isResumed }) {
-                                transaction.hide(frag)
+                            fragmentList.filter { f -> f.isResumed }.forEach {
+                                transaction.hide(it)
                             }
                             if (it.isAdded) {
                                 transaction.show(it)

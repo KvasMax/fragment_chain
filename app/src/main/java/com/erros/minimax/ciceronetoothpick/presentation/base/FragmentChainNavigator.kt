@@ -52,18 +52,18 @@ constructor(private val containerId: Int,
             return
         }
 
-        fragmentManager.fragments.filter { it.isResumed }
-                .forEach {
-                    fragmentManager.beginTransaction()
-                            .hide(it)
-                            .commitNow()
-                }
 
         val transaction = fragmentManager.beginTransaction()
 
+        val currentFragment = if (fragmentManager.fragments.isEmpty()) null else fragmentManager.fragments.last()
+
+        currentFragment?.let {
+            transaction.hide(it)
+        }
+
         setupFragmentTransactionAnimation(
                 command,
-                if (fragmentManager.fragments.isEmpty()) null else fragmentManager.fragments.last(),
+                currentFragment,
                 newFragment,
                 transaction
         )
@@ -81,11 +81,6 @@ constructor(private val containerId: Int,
             fragmentManager.apply {
                 popBackStackImmediate()
                 localStackCopy.pop()
-                if (fragments.isNotEmpty()) {
-                    beginTransaction()
-                            .show(fragments.last())
-                            .commitNow()
-                }
             }
         } else {
             exit()
@@ -101,20 +96,26 @@ constructor(private val containerId: Int,
         }
 
         if (localStackCopy.size > 0) {
-            fragmentManager.popBackStack()
+            fragmentManager.popBackStackImmediate()
             localStackCopy.pop()
 
             val fragmentTransaction = fragmentManager.beginTransaction()
 
+            val currentFragment = if (fragmentManager.fragments.isEmpty()) null else fragmentManager.fragments.last()
+
+            currentFragment?.let {
+                fragmentTransaction.hide(it)
+            }
+
             setupFragmentTransactionAnimation(
                     command,
-                    fragmentManager.findFragmentById(containerId),
+                    currentFragment,
                     fragment,
                     fragmentTransaction
             )
 
             fragmentTransaction
-                    .replace(containerId, fragment)
+                    .add(containerId, fragment)
                     .addToBackStack(command.screenKey)
                     .commit()
             localStackCopy.add(command.screenKey)
@@ -130,7 +131,7 @@ constructor(private val containerId: Int,
             )
 
             fragmentTransaction
-                    .replace(containerId, fragment)
+                    .add(containerId, fragment)
                     .commit()
         }
     }

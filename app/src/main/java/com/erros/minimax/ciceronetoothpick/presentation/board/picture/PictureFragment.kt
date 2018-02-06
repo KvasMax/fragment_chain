@@ -37,6 +37,7 @@ class PictureFragment : BasePresenterFragment<PictureContract.Presenter, Picture
         get() = R.layout.fragment_picture
 
     override fun initViews() {
+        imageView.setOnClickListener { presenter.onImageClick() }
     }
 
     override fun inject() {
@@ -50,7 +51,6 @@ class PictureFragment : BasePresenterFragment<PictureContract.Presenter, Picture
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //ViewCompat.setTransitionName(imageView, TRANSITION_NAME)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.transitionName = TRANSITION_NAME
         }

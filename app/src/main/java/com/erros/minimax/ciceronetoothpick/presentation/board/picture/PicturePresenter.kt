@@ -18,6 +18,10 @@ class PicturePresenter
         view.showPicture(pictureUrl)
     }
 
+    override fun onImageClick() {
+        router.exit()
+    }
+
     override fun onBackPressed() {
         router.exit()
     }

@@ -14,5 +14,6 @@ interface PictureContract {
     }
 
     interface Presenter : BasePresenter<View>, BackButtonListener {
+        fun onImageClick()
     }
 }

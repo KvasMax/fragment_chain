@@ -24,7 +24,7 @@ class Paginator<T>(
     private val calendar = Calendar.getInstance()
 
     private var currentState: State<T> = EMPTY()
-    private var currentDate: Date = startDate.clone() as Date
+    private var currentDate: Date = initialDate.clone() as Date
     private val currentData = mutableListOf<T>()
     private var disposable: Disposable? = null
 
@@ -52,6 +52,10 @@ class Paginator<T>(
                         { currentState.newData(it) },
                         { currentState.fail(it) }
                 )
+    }
+
+    private fun resetCurrentDate() {
+        currentDate = startDate.clone() as Date
     }
 
     private interface State<T> {
@@ -88,7 +92,7 @@ class Paginator<T>(
                 currentState = DATA()
                 currentData.clear()
                 currentData.addAll(data)
-                currentDate = startDate.clone() as Date
+                resetCurrentDate()
                 viewController.onEmptyProgress(false)
                 viewController.onRefreshProgress(false) //FIXME this to hide swiperefresh
                 viewController.onData(true, currentData)
@@ -203,7 +207,7 @@ class Paginator<T>(
                 currentState = DATA()
                 currentData.clear()
                 currentData.addAll(data)
-                currentDate = startDate.clone() as Date
+                resetCurrentDate()
                 viewController.onRefreshProgress(false)
                 viewController.onData(true, currentData)
             } else {

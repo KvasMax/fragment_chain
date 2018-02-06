@@ -48,6 +48,8 @@ class DateListFragment : BasePresenterFragment<DateListContract.Presenter, DateL
 
     override fun showEmptyProgress(show: Boolean) {
         progressBar.visible(show)
+        swipeRefreshLayout.visible(!show)
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun showRefreshProgress(show: Boolean) {

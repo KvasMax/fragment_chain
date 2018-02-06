@@ -94,20 +94,17 @@ class Paginator<T>(
                 currentData.addAll(data)
                 resetCurrentDate()
                 viewController.onEmptyProgress(false)
-                viewController.onRefreshProgress(false) //FIXME this to hide swiperefresh
                 viewController.onData(true, currentData)
             } else {
                 currentState = EMPTY_DATA()
                 viewController.onEmptyProgress(false)
                 viewController.onEmptyView(true)
-                viewController.onRefreshProgress(false) //FIXME this to hide swiperefresh
             }
         }
 
         override fun fail(error: Throwable) {
             currentState = EMPTY_ERROR()
             viewController.onEmptyProgress(false)
-            viewController.onRefreshProgress(false) //FIXME this to hide swiperefresh
             viewController.onEmptyError(true, error)
         }
 

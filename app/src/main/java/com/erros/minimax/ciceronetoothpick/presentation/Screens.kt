@@ -11,4 +11,5 @@ object Screens {
     const val SETTINGS = "SETTINGS_SCREEN"
     const val GROUPED_HISTORY = "GROUPED_HISTORY"
     const val DETAIL_HISTORY = "DETAIL_HISTORY"
+    const val CALENDAR = "CALENDAR"
 }

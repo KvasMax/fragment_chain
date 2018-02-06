@@ -12,6 +12,7 @@ import com.erros.minimax.ciceronetoothpick.di.module.MainActivityModule
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
 import com.erros.minimax.ciceronetoothpick.presentation.base.BackButtonListener
 import com.erros.minimax.ciceronetoothpick.presentation.board.BoardChainFragment
+import com.erros.minimax.ciceronetoothpick.presentation.calendar.CalendarChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.chat.ConversationChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.history.HistoryChainFragment
 import com.erros.minimax.ciceronetoothpick.presentation.settings.SettingsFragment
@@ -36,8 +37,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private val boardFragment by lazy { BoardChainFragment() }
     private val settingsFragment by lazy { SettingsFragment() }
     private val historyFragment by lazy { HistoryChainFragment() }
+    private val calendarFragment by lazy { CalendarChainFragment() }
 
-    private val fragmentList by lazy { arrayOf(conversationChainFragment, boardFragment, settingsFragment, historyFragment) }
+    private val fragmentList by lazy { arrayOf(conversationChainFragment, boardFragment, settingsFragment, historyFragment, calendarFragment) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +53,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     private fun initViews() {
-        navigationView.addItem(BottomNavigationItem(android.R.drawable.ic_dialog_map, "Chat"))
-                .addItem(BottomNavigationItem(android.R.drawable.ic_dialog_map, "Board"))
-                .addItem(BottomNavigationItem(android.R.drawable.ic_dialog_map, "History"))
-                .addItem(BottomNavigationItem(android.R.drawable.ic_dialog_map, "Settings"))
+        navigationView.addItem(BottomNavigationItem(android.R.drawable.ic_menu_edit, "Chat"))
+                .addItem(BottomNavigationItem(android.R.drawable.ic_menu_gallery, "Board"))
+                .addItem(BottomNavigationItem(android.R.drawable.ic_menu_recent_history, "History"))
+                .addItem(BottomNavigationItem(android.R.drawable.ic_menu_compass, "Settings"))
+                .addItem(BottomNavigationItem(android.R.drawable.ic_menu_day, "Calendar"))
                 .initialise()
 
         navigationView.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener {
@@ -71,6 +74,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     TAB_BOARD -> presenter.onBoardClick()
                     TAB_HISTORY -> presenter.onHistoryClick()
                     TAB_SETTINGS -> presenter.onSettingsClick()
+                    TAB_CALENDAR -> presenter.onCalendarClick()
                 }
             }
         })
@@ -78,7 +82,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private fun initPresenter() {
         Toothpick.openScopes(Scopes.APP, Scopes.MAIN_SCREEN).apply {
-            installModules(MainActivityModule(this@MainActivity))
+            installModules(MainActivityModule())
             Toothpick.inject(this@MainActivity, this)
         }
     }
@@ -128,18 +132,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 is Replace -> {
                     var fragment: Fragment? = null
                     when (command.screenKey) {
-                        Screens.CONVERSATIONS -> {
-                            fragment = conversationChainFragment
-                        }
-                        Screens.BOARD -> {
-                            fragment = boardFragment
-                        }
-                        Screens.SETTINGS -> {
-                            fragment = settingsFragment
-                        }
-                        Screens.GROUPED_HISTORY -> {
-                            fragment = historyFragment
-                        }
+
+                        Screens.CONVERSATIONS -> fragment = conversationChainFragment
+                        Screens.BOARD -> fragment = boardFragment
+                        Screens.SETTINGS -> fragment = settingsFragment
+                        Screens.GROUPED_HISTORY -> fragment = historyFragment
+                        Screens.CALENDAR -> fragment = calendarFragment
                     }
                     fragment?.let {
                         if (currentFragment != it) {

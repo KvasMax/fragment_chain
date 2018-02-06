@@ -13,6 +13,7 @@ interface MainContract {
         val TAB_BOARD get() = 1
         val TAB_HISTORY get() = 2
         val TAB_SETTINGS get() = 3
+        val TAB_CALENDAR get() = 4
 
         fun highlightTab(tabPosition: Int)
     }
@@ -23,6 +24,7 @@ interface MainContract {
         fun onHistoryClick()
         fun onSettingsClick()
         fun onBackPressed()
+        fun onCalendarClick()
     }
 
 }

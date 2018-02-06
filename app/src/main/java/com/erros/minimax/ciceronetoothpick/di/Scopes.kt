@@ -10,4 +10,5 @@ object Scopes {
     const val HISTORY = "HISTORY"
     const val BOARD = "BOARD"
     const val PICTURE = "PICTURE"
+    const val CALENDAR = "CALENDAR"
 }

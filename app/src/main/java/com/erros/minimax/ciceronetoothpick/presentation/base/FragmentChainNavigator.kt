@@ -85,7 +85,7 @@ constructor(private val containerId: Int,
     protected open fun back() {
         if (localStackCopy.size > 0) {
             fragmentManager.apply {
-                popBackStackImmediate()
+                popBackStack()
                 localStackCopy.pop()
             }
         } else {

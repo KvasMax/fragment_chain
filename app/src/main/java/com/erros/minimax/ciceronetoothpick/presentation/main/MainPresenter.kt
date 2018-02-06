@@ -46,6 +46,13 @@ class MainPresenter
         }
     }
 
+    override fun onCalendarClick() {
+        route.replaceScreen(Screens.CALENDAR)
+        view?.apply {
+            highlightTab(TAB_CALENDAR)
+        }
+    }
+
     override fun onBackPressed() {
         route.exit()
     }

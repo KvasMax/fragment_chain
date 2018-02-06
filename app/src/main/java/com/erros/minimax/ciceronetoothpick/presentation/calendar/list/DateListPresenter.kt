@@ -24,8 +24,7 @@ class DateListPresenter
                 .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-    },
-            this, Date())
+    }, this, Date())
 
     override fun onViewAttached(view: DateListContract.View) {
         super.onViewAttached(view)

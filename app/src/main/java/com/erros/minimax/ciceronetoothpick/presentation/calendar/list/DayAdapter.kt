@@ -30,8 +30,7 @@ class DayAdapter(retryListener: () -> Unit) : ListDelegationAdapter<MutableList<
         items.addAll(days)
         if (progress) items.add(ListItem.ProgressItem())
 
-        DiffUtil.calculateDiff(DiffCallback(items, oldData), false)
-                .dispatchUpdatesTo(this)
+        dispatchChanges(items, oldData)
     }
 
     fun showProgress(isVisible: Boolean) {
@@ -41,8 +40,7 @@ class DayAdapter(retryListener: () -> Unit) : ListDelegationAdapter<MutableList<
         if (isVisible && !currentProgress) items.add(ListItem.ProgressItem())
         else if (!isVisible && currentProgress) items.remove(items.last())
 
-        DiffUtil.calculateDiff(DiffCallback(items, oldData), false)
-                .dispatchUpdatesTo(this)
+        dispatchChanges(items, oldData)
     }
 
     fun showEmpty(show: Boolean) {
@@ -50,16 +48,13 @@ class DayAdapter(retryListener: () -> Unit) : ListDelegationAdapter<MutableList<
             val oldData = items.toList()
             items.clear()
             items.add(ListItem.EmptyItem())
-            DiffUtil.calculateDiff(DiffCallback(items, oldData), false)
-                    .dispatchUpdatesTo(this)
-        } else {
-            if (items.isNotEmpty() && items[0] is ListItem.EmptyItem) {
-                val oldData = items.toList()
-                items.clear()
-                DiffUtil.calculateDiff(DiffCallback(items, oldData), false)
-                        .dispatchUpdatesTo(this)
-            }
+            dispatchChanges(items, oldData)
+        } else if (items.isNotEmpty() && items[0] is ListItem.EmptyItem) {
+            val oldData = items.toList()
+            items.clear()
+            dispatchChanges(items, oldData)
         }
+
     }
 
     fun showError(show: Boolean) {
@@ -67,16 +62,18 @@ class DayAdapter(retryListener: () -> Unit) : ListDelegationAdapter<MutableList<
             val oldData = items.toList()
             items.clear()
             items.add(ListItem.ErrorItem())
-            DiffUtil.calculateDiff(DiffCallback(items, oldData), false)
-                    .dispatchUpdatesTo(this)
-        } else {
-            if (items.isNotEmpty() && items[0] is ListItem.ErrorItem) {
-                val oldData = items.toList()
-                items.clear()
-                DiffUtil.calculateDiff(DiffCallback(items, oldData), false)
-                        .dispatchUpdatesTo(this)
-            }
+            dispatchChanges(items, oldData)
+        } else if (items.isNotEmpty() && items[0] is ListItem.ErrorItem) {
+            val oldData = items.toList()
+            items.clear()
+            dispatchChanges(items, oldData)
         }
+
+    }
+
+    private fun dispatchChanges(newData: List<Any>, oldData: List<Any>) {
+        DiffUtil.calculateDiff(DiffCallback(newData, oldData), false)
+                .dispatchUpdatesTo(this)
     }
 
     private fun isProgress() = items.isNotEmpty() && items.last() is ListItem.ProgressItem

@@ -2,9 +2,6 @@ package com.erros.minimax.ciceronetoothpick.presentation.base.delegates
 
 import android.support.v7.util.DiffUtil
 
-/**
- * Created by Konstantin Tskhovrebov (aka @terrakok) on 04.01.18.
- */
 class DiffCallback(
         private val newData: List<Any>,
         private val oldData: List<Any>

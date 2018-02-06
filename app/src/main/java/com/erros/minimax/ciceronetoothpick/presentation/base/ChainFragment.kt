@@ -1,8 +1,11 @@
 package com.erros.minimax.ciceronetoothpick.presentation.base
 
+import android.support.design.widget.Snackbar
+import android.support.design.widget.Snackbar.LENGTH_LONG
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.erros.minimax.ciceronetoothpick.R
+import kotlinx.android.synthetic.main.fragment_chain.*
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.commands.Command
@@ -51,6 +54,10 @@ abstract class ChainFragment : BaseFragment(), BackButtonListener {
 
             override fun setupFragmentTransactionAnimation(command: Command, currentFragment: Fragment?, nextFragment: Fragment, fragmentTransaction: FragmentTransaction) {
                 this@ChainFragment.setupFragmentTransactionAnimation(command, currentFragment, nextFragment, fragmentTransaction)
+            }
+
+            override fun showSystemMessage(message: String) {
+                Snackbar.make(contentContainer, message, LENGTH_LONG).show()
             }
         }
     }

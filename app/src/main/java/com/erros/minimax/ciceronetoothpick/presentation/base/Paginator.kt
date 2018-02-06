@@ -4,9 +4,6 @@ import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import java.util.*
 
-/**
- * Created by Konstantin Tskhovrebov (aka @terrakok) on 22.07.17.
- */
 class Paginator<T>(
         private val requestFactory: (Int, Int) -> Single<List<T>>,
         private val viewController: ViewController<T>,

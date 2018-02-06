@@ -60,6 +60,8 @@ class DateListPresenter
     }
 
     override fun onErrorMessage(error: Throwable) {
+        handleError(error)
+        router.showSystemMessage(error.message)
     }
 
     override fun onRefreshProgress(show: Boolean) {

@@ -1,16 +1,13 @@
 package com.erros.minimax.ciceronetoothpick.presentation.calendar.list
 
-import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
+import android.support.v7.widget.RecyclerView
 import com.erros.minimax.ciceronetoothpick.R
 import com.erros.minimax.ciceronetoothpick.data.model.Day
 import com.erros.minimax.ciceronetoothpick.di.Scopes
 import com.erros.minimax.ciceronetoothpick.extension.visible
 import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenterFragment
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import net.idik.lib.slimadapter.SlimAdapter
-import net.idik.lib.slimadapter.ex.loadmore.SlimMoreLoader
 import toothpick.Toothpick
 import javax.inject.Inject
 
@@ -26,43 +23,27 @@ class DateListFragment : BasePresenterFragment<DateListContract.Presenter, DateL
         get() = R.layout.fragment_calendar
 
     private val adapter by lazy {
-        SlimAdapter.create()
-                .register<Day>(R.layout.item_day, { day, injector ->
-                    injector.text(R.id.date_text_view, day.date)
-                            .text(R.id.title_text_view, day.celebrations.joinToString(separator = "\n") { it.title })
-                            .with<View>(R.id.colorIndicatorView, {
-                                var color = day.celebrations.first().colour
-                                if (color == "violet") {
-                                    color = "purple"
-                                }
-                                it.setBackgroundColor(Color.parseColor(color))
-                            })
-                })
-                .enableLoadMore(object : SlimMoreLoader(activity) {
-                    override fun hasMore(): Boolean = true
-
-                    override fun onLoadMore(handler: Handler?) {
-                        presenter.onLoadNext()
-                    }
-                })
+        DayAdapter({
+            presenter.onRefresh()
+        })
     }
 
     override fun initViews() {
-        adapter.attachTo(recyclerView)
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
         swipeRefreshLayout.setOnRefreshListener { presenter.onRefresh() }
-        /* recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                 if ((recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() == adapter.itemCount - 1) {
-                     presenter.onLoadNext()
-                 }
-             }
-         })*/
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if ((recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() == adapter.itemCount - 1) {
+                    presenter.onLoadNext()
+                }
+            }
+        })
     }
 
     override fun showData(show: Boolean, data: List<Day>) {
         recyclerView.visible(show)
-        adapter.updateData(data)
+        adapter.setData(data)
     }
 
     override fun showEmptyProgress(show: Boolean) {
@@ -71,6 +52,18 @@ class DateListFragment : BasePresenterFragment<DateListContract.Presenter, DateL
 
     override fun showRefreshProgress(show: Boolean) {
         swipeRefreshLayout.isRefreshing = show
+    }
+
+    override fun showEmpty(show: Boolean) {
+        adapter.showEmpty(show)
+    }
+
+    override fun showEmptyError(show: Boolean) {
+        adapter.showError(show)
+    }
+
+    override fun showPageProgress(show: Boolean) {
+        adapter.showProgress(show)
     }
 
     override fun inject() {

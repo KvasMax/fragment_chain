@@ -14,6 +14,9 @@ interface DateListContract {
         fun showData(show: Boolean, data: List<Day>)
         fun showEmptyProgress(show: Boolean)
         fun showRefreshProgress(show: Boolean)
+        fun showEmpty(show: Boolean)
+        fun showEmptyError(show: Boolean)
+        fun showPageProgress(show: Boolean)
     }
 
     interface Presenter : BasePresenter<View>, BackButtonListener {

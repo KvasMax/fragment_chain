@@ -7,7 +7,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/date_text_view"
+        android:id="@+id/dateTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="17sp"
@@ -17,13 +17,13 @@
         tools:text="Date" />
 
     <TextView
-        android:id="@+id/title_text_view"
+        android:id="@+id/titleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/colorIndicatorView"
-        app:layout_constraintTop_toBottomOf="@id/date_text_view"
+        app:layout_constraintTop_toBottomOf="@id/dateTextView"
         tools:text="Title" />
 
     <View

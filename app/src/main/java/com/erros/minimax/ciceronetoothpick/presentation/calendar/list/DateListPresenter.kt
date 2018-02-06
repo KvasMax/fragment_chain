@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.terrakok.cicerone.Router
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -20,6 +21,7 @@ class DateListPresenter
 
     private val paginator = Paginator({ year, month ->
         calendarRepository.getMonthlyCalendar(year, month)
+                .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     },
@@ -46,16 +48,15 @@ class DateListPresenter
         error?.let {
             handleError(it)
         }
-
+        view?.showEmptyError(show)
     }
 
     override fun onEmptyView(show: Boolean) {
+        view?.showEmpty(show)
     }
 
     override fun onData(show: Boolean, data: List<Day>) {
-        if (show) {
-            view?.showData(show, data)
-        }
+        view?.showData(show, data)
     }
 
     override fun onErrorMessage(error: Throwable) {
@@ -66,6 +67,7 @@ class DateListPresenter
     }
 
     override fun onPageProgress(show: Boolean) {
+        view?.showPageProgress(show)
     }
 
     override fun onBackPressed() {

@@ -3,9 +3,10 @@ package com.erros.minimax.ciceronetoothpick.presentation.chat.conversations
 import com.erros.minimax.ciceronetoothpick.data.repository.PlaceholderRepository
 import com.erros.minimax.ciceronetoothpick.presentation.Screens
 import com.erros.minimax.ciceronetoothpick.presentation.base.AbstractBasePresenter
+import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import ru.terrakok.cicerone.Router
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -18,6 +19,8 @@ class ConversationsPresenter
                     private val placeholderRepository: PlaceholderRepository)
     : AbstractBasePresenter<ConversationsContract.View>(), ConversationsContract.Presenter {
 
+    private var job: Job? = null
+
     override fun onViewAttached(view: ConversationsContract.View) {
         super.onViewAttached(view)
         loadData()
@@ -28,16 +31,17 @@ class ConversationsPresenter
     }
 
     private fun loadData() {
-        launch(UI) {
-            try {
-                view?.showProgress(true)
-                delay(1, TimeUnit.SECONDS)
-                view?.showUsers(placeholderRepository.getUsers().await())
-            } catch (ex: Exception) {
-                handleError(ex)
-                router.showSystemMessage(ex.message)
-            } finally {
-                view?.showProgress(false)
+        job?.cancel()
+        job = async(UI) {
+            view?.showProgress(true)
+            delay(1, TimeUnit.SECONDS)
+            view?.showUsers(placeholderRepository.getUsers().await())
+        }
+        job?.invokeOnCompletion {
+            view?.showProgress(false)
+            it?.let {
+                handleError(it)
+                router.showSystemMessage(it.message)
             }
         }
     }
@@ -50,4 +54,8 @@ class ConversationsPresenter
         router.exit()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job?.cancel()
+    }
 }

@@ -1,5 +1,6 @@
 package com.erros.minimax.ciceronetoothpick.presentation.chat.conversations
 
+import com.erros.minimax.ciceronetoothpick.data.model.Person
 import com.erros.minimax.ciceronetoothpick.presentation.base.BackButtonListener
 import com.erros.minimax.ciceronetoothpick.presentation.base.BasePresenter
 import com.erros.minimax.ciceronetoothpick.presentation.base.BaseView
@@ -10,11 +11,13 @@ import com.erros.minimax.ciceronetoothpick.presentation.base.BaseView
 interface ConversationsContract {
 
     interface View : BaseView {
-
+        fun showProgress(show: Boolean)
+        fun showUsers(persons: List<Person>)
     }
 
     interface Presenter : BasePresenter<View>, BackButtonListener {
         fun onOpenChatClick()
+        fun onRefresh()
     }
 
 }
